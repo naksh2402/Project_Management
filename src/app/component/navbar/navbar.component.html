@@ -1,0 +1,33 @@
+<div class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" routerLink="/" routerLinkActive="active"
+        >Task Portal</a
+      >
+    </div>
+    <ul class="nav navbar-nav">
+      <li>
+        <a routerLink="/admin" *ngIf="authService.getUserRole() === 'admin'"
+          >Admin DashBoard</a
+        >
+      </li>
+      <li>
+        <a routerLink="/team" *ngIf="authService.getUserRole() === 'employee'"
+          >Team DashBoard</a
+        >
+      </li>
+      <li>
+        <a routerLink="/projects">Projects</a>
+      </li>
+      <li>
+        <a routerLink="/tasks">Tasks</a>
+      </li>
+    </ul>
+    <ul
+      class="nav navbar-nav navbar-right"
+      *ngIf="authService.isAuthenticated()"
+    >
+      <li><a (click)="authService.logout()">Logout</a></li>
+    </ul>
+  </div>
+</div>

@@ -23,7 +23,6 @@ export class AuthService {
   user: any = null;
 
   constructor(private router: Router, private firestore: Firestore) {
-    // Listen for authentication state changes
     auth.onAuthStateChanged(user => {
       this.user = user;
       if (user) {
@@ -49,7 +48,6 @@ export class AuthService {
   async signUpWithEmail(email: string, password: string, role: string): Promise<void> {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      // Store user role in Firestore under 'users/{uid}'
       await setDoc(doc(this.firestore, 'users', userCredential.user.uid), { email, role });
       localStorage.setItem('role', role);
       this.router.navigate(['/dashboard']);
@@ -93,7 +91,9 @@ export class AuthService {
   isAuthenticated(): boolean {
     return !!localStorage.getItem('user');
   }
-
+  getUserRole():string|null{
+    return localStorage.getItem('role');
+  }
   // Fetch user role from Firestore and store it locally
   async fetchUserRole(uid: string): Promise<void> {
     const userDoc = doc(this.firestore, 'users', uid);

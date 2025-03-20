@@ -12,13 +12,23 @@ import { environment } from 'src/environment/environment';
 import { provideFirebaseApp,initializeApp } from '@angular/fire/app';
 import {getAuth,provideAuth} from '@angular/fire/auth'
 import {provideFirestore,getFirestore} from '@angular/fire/firestore';
+import { ProjectListComponent } from './component/project-list/project-list.component';
+import { TaskListComponent } from './component/task-list/task-list.component';
+import { NavbarComponent } from './component/navbar/navbar.component';
+import { TaskDetailsComponent } from './component/task-details/task-details.component';
+import { ProjectDetailsComponent } from './component/project-details/project-details.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AdminDashboardComponent,
     TeamDashboardComponent,
-    AuthComponent
+    AuthComponent,
+    ProjectListComponent,
+    TaskListComponent,
+    NavbarComponent,
+    TaskDetailsComponent,
+    ProjectDetailsComponent
   ],
   imports: [
     BrowserModule,

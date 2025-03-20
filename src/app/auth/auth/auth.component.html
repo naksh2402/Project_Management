@@ -26,7 +26,8 @@
           class="form-control"
         />
       </div>
-      <!-- Role selection shown only in Signup mode -->
+
+      <!-- Role selection  in Signup mode -->
       <div class="form-group" *ngIf="!isLoginMode">
         <label for="role">Select Role:</label>
         <select id="role" name="role" ngModel required class="form-control">
@@ -41,7 +42,7 @@
 
     <hr />
 
-    <!-- OTP Section for Phone Authentication -->
+    <!-- OTP Section for Phone Authentication  -->
     <h3 class="text-center">OTP Authentication</h3>
     <form #otpForm="ngForm" (ngSubmit)="onSendOtp(otpForm)" *ngIf="!isOtpSent">
       <div class="form-group">
@@ -86,6 +87,5 @@
 
     <!-- Recaptcha container -->
     <div id="recaptcha-container"></div>
-      
   </div>
 </div>
