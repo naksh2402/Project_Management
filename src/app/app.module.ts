@@ -8,7 +8,10 @@ import { TeamDashboardComponent } from './component/team-dashboard/team-dashboar
 import { AuthComponent } from './auth/auth/auth.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-
+import { environment } from 'src/environment/environment';
+import { provideFirebaseApp,initializeApp } from '@angular/fire/app';
+import {getAuth,provideAuth} from '@angular/fire/auth'
+import {provideFirestore,getFirestore} from '@angular/fire/firestore';
 
 @NgModule({
   declarations: [
@@ -22,8 +25,10 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    ReactiveFormsModule
-    
+    ReactiveFormsModule,
+   provideFirebaseApp(()=>initializeApp(environment.firebase)),
+   provideAuth(()=> getAuth()),
+   provideFirestore(()=>getFirestore())
   ],
   providers: [],
   bootstrap: [AppComponent]
