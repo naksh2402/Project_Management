@@ -1,6 +1,4 @@
 export interface User{
-    name:string,
-    email:string,
-    role:string,
-    password:string,
-}
+    uid:string,
+    phoneNumber:string,
+    role:'admin' | 'teamMember';}

@@ -10,8 +10,14 @@ import { getAuth, RecaptchaVerifier } from "firebase/auth";
 })
 export class AuthComponent implements OnInit {
 isLoginMode:boolean=true;
+// isLoginMode:boolean=false;
 isOtpSent=false;
 confirmationResult:any=null;
+email:string='';
+password:string='';
+phoneNumber:string='';
+otp:string='';
+role:string='teamMember';
 
 constructor(private authService:AuthService){}
 ngOnInit(): void {
@@ -30,7 +36,7 @@ if(!form.value.phoneNumber){
   return;
 }
 
-this.authService.loginWithPhone(form.value.phoneNumber,(window as any).recaptchaVerifier)
+this.authService.signInWithPhone(form.value.phoneNumber,(window as any).recaptchaVerifier)
 .then((confirmationResult) => {
   this.confirmationResult = confirmationResult;
   this.isOtpSent = true;
@@ -59,7 +65,7 @@ onVerifyOtp(form:NgForm){
 if(!form.value.otp){
   return;
 }
-this.authService.verifyOtp(form.value.otp,this.confirmationResult);
+this.authService.verifyOTP(form.value.otp,this.confirmationResult);
 }
 
 toggleMode(){

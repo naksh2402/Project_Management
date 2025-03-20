@@ -1,17 +1,16 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
-import { Task } from '../models/task.model';
+import { Project } from '../models/project.model';
 import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TaskService {
+export class ProjectService {
   constructor(private db: AngularFireDatabase) {}
 
-
-  getTasks(): Observable<any[]> {
-    return this.db.list('tasks').snapshotChanges().pipe(
+  getProjects(): Observable<any[]> {
+    return this.db.list('projects').snapshotChanges().pipe(
       map(actions =>
         actions
           .filter(a => a.payload.exists()) // Check if snapshot exists
@@ -25,15 +24,15 @@ export class TaskService {
 
 
 
-  createTask(task: Task) {
-    return this.db.list('tasks').push(task);
+  createProject(project: Project) {
+    return this.db.list('projects').push(project);
   }
 
-  updateTask(taskId: string, task: Partial<Task>) {
-    return this.db.object(`tasks/${taskId}`).update(task);
+  updateProject(projectId: string, project: Partial<Project>) {
+    return this.db.object(`projects/ ${projectId}`).update(project);
   }
 
-  deleteTask(taskId: string) {
-    return this.db.object(`tasks/${taskId}`).remove();
+  deleteProject(projectId: string) {
+    return this.db.object(`projects/${projectId}`).remove();
 }
 }

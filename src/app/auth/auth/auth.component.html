@@ -10,7 +10,7 @@
           type="email"
           id="email"
           name="email"
-          ngModel
+          [(ngModel)]="email"
           required
           class="form-control"
         />
@@ -21,22 +21,35 @@
           type="password"
           id="password"
           name="password"
-          ngModel
+          [(ngModel)]="password"
           required
           class="form-control"
         />
       </div>
 
-      <!-- Role selection  in Signup mode -->
+      <!-- Role selection in Signup mode -->
       <div class="form-group" *ngIf="!isLoginMode">
         <label for="role">Select Role:</label>
-        <select id="role" name="role" ngModel required class="form-control">
+        <select
+          id="role"
+          name="role"
+          [(ngModel)]="role"
+          required
+          class="form-control"
+        >
           <option value="admin">Admin</option>
-          <option value="employee">Employee</option>
+          <option value="teamMember">Team Member</option>
         </select>
       </div>
       <button type="submit" class="btn btn-primary btn-block">
         {{ isLoginMode ? "Login" : "Signup" }}
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary btn-block"
+        (click)="toggleMode()"
+      >
+        {{ isLoginMode ? "Swithch to Signup" : "Switch to Login" }}
       </button>
     </form>
 
@@ -81,9 +94,9 @@
     </form>
 
     <!-- Toggle between Login and Signup -->
-    <p class="text-center toggle-text" (click)="toggleMode()">
+    <!-- <p class="text-center toggle-text" (click)="toggleMode()">
       {{ isLoginMode ? "Create an Account" : "Already have an account? Login" }}
-    </p>
+    </p> -->
 
     <!-- Recaptcha container -->
     <div id="recaptcha-container"></div>

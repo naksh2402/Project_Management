@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-team-dashboard',
   templateUrl: './team-dashboard.component.html',
   styleUrls: ['./team-dashboard.component.css']
 })
-export class TeamDashboardComponent {
-
+export class TeamDashboardComponent implements OnInit {
+ ngOnInit(): void {
+     
+ }
 }

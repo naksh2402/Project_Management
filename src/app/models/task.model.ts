@@ -1,5 +1,9 @@
 export interface Task{
-    project:string,
-    assignedTo:string,
-    status:string,
+    id:string,
+    name:string,
+    description:string,
+    comments?:string[],
+    projectId:string,
+    assignedTo?:string,
+    status:'pending' | 'inProgress' | 'completed'
 }

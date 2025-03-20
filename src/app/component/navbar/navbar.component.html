@@ -6,28 +6,41 @@
       >
     </div>
     <ul class="nav navbar-nav">
+      <li *ngIf="authService.getUserRole() === 'admin'">
+        <a routerLink="/admin">Admin DashBoard</a>
+      </li>
+      <li *ngIf="authService.getUserRole() === 'teamMember'">
+        <a routerLink="/team">Team DashBoard</a>
+      </li>
       <li>
-        <a routerLink="/admin" *ngIf="authService.getUserRole() === 'admin'"
-          >Admin DashBoard</a
+        <a
+          routerLink="/admin /projects"
+          *ngIf="authService.getUserRole() === 'admin'"
+          >Projects</a
         >
       </li>
       <li>
-        <a routerLink="/team" *ngIf="authService.getUserRole() === 'employee'"
-          >Team DashBoard</a
+        <a
+          routerLink="/admin/tasks/assign"
+          *ngIf="authService.getUserRole() === 'admin'"
+        >
+          Assign Tasks</a
         >
       </li>
       <li>
-        <a routerLink="/projects">Projects</a>
-      </li>
-      <li>
-        <a routerLink="/tasks">Tasks</a>
+        <a
+          routerLink="/team/tasks"
+          *ngIf="authService.getUserRole() === 'teamMember'"
+        >
+          My Tasks</a
+        >
       </li>
     </ul>
     <ul
       class="nav navbar-nav navbar-right"
       *ngIf="authService.isAuthenticated()"
     >
-      <li><a (click)="authService.logout()">Logout</a></li>
+      <li><a (click)="authService.signOut()">Logout</a></li>
     </ul>
   </div>
 </div>

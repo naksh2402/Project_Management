@@ -1,0 +1,87 @@
+<div class="container">
+  <h2>Manage Projects</h2>
+  <form (ngSubmit)="addProject()" #projectForm="ngForm">
+    <div class="form-group">
+      <label for="name">Project Name</label>
+      <input
+        type="text"
+        id="name"
+        class="form-control"
+        [(ngModel)]="newProject.name"
+        name="name"
+        required
+      />
+    </div>
+    <div class="form-group">
+      <label for="description">Project Description</label>
+      <textarea
+        id="description"
+        class="form-control"
+        [(ngModel)]="newProject.description"
+        name="description"
+        required
+      ></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary btn-block">Add Project</button>
+  </form>
+
+  <hr />
+
+  <h3>Existing Projects</h3>
+  <ul class="list-group">
+    <li *ngFor="let project of projects" class="list-group-item">
+      <strong>{{ project.name }}</strong> - {{ project.description }}
+      <div class="pull-right">
+        <button class="btn btn-sm btn-info" (click)="setEditProject(project)">
+          Edit
+        </button>
+        <button
+          class="btn btn-sm btn-danger"
+          (click)="deleteProject(project.id)"
+        >
+          Delete
+        </button>
+      </div>
+    </li>
+  </ul>
+
+  <!-- Edit Project Form -->
+  <div *ngIf="editProject" class="panel panel-default" style="margin-top: 20px">
+    <div class="panel-heading"><strong>Edit Project</strong></div>
+    <div class="panel-body">
+      <form (ngSubmit)="updateProject()" #editForm="ngForm">
+        <div class="form-group">
+          <label for="editName">Project Name</label>
+          <input
+            type="text"
+            id="editName"
+            class="form-control"
+            [(ngModel)]="editProject.name"
+            name="editName"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="editDescription">Project Description</label>
+          <textarea
+            id="editDescription"
+            class="form-control"
+            [(ngModel)]="editProject.description"
+            name="editDescription"
+            required
+          ></textarea>
+        </div>
+        <button type="submit" class="btn btn-success btn-block">
+          Update Project
+        </button>
+        <button
+          type="button"
+          class="btn btn-default btn-block"
+          (click)="editProject = null"
+        >
+          Cancel
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
