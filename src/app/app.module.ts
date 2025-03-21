@@ -4,12 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 
-
-import { AngularFireModule } from '@angular/fire/compat';
-import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
-import { environment } from '../../src/environment/environment'
-
-
 import { AppComponent } from './app.component';
 import { AuthComponent } from './component/auth/auth.component';
 import { NavbarComponent } from './component/navbar/navbar.component';

@@ -33,6 +33,11 @@ export class UserService {
   addUser(userId: string, userData: any): Observable<any> {
     return this.http.put(`${this.firebaseDbUrl}/users/${userId}.json`, userData);
   }
+  deleteUser(userId:string,userData:any):Observable<any>{
+    return this.http.delete(`${this.firebaseDbUrl}/users/${userId}.json`);
+  }
+
+
 }
 
 

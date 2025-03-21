@@ -21,11 +21,9 @@
           <strong>{{ task.title }}</strong> – Status: {{ task.status }}
         </div>
         <div>
-          <!-- Display assigned user email if available, else show task.assignedUserId -->
-          <!-- In your template (admin-dashboard.component.html) -->
           <span *ngIf="task.assignedUserId">
             Assigned to:
-            {{ getAssignedMemberEmail(task) || task.assignedUserId }}
+            {{ getAssignedMemberEmail(task) || "Not-assigned" }}
           </span>
           <span *ngIf="!task.assignedUserId">Not assigned</span>
         </div>

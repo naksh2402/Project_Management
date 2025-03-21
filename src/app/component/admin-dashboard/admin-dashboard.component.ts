@@ -48,21 +48,23 @@ export class AdminDashboardComponent implements OnInit {
     });
   }
 
-  // Assign task: update both assignedUserId and status (to 'inProgress')
   assignTask(task: Task, assignedUserId: string): void {
     if (task.id && assignedUserId) {
       this.taskService.assignTask(task.id, assignedUserId).subscribe(
         () => {
           task.assignedUserId = assignedUserId;
           task.status = 'inProgress';
-          console.log('Task assigned and status updated successfully');
+          console.log('Task assigned and status updated successfully',task,assignedUserId);
         },
         error => {
           console.error('Error assigning task:', error);
         }
       );
     }
-     this.teamService.updateTaskList(this.tasks);
+     this.teamService.updateTaskStatus(task.id??'', 'inProgress').subscribe((data)=>{
+       console.log("Nice",data);
+
+     });
   }
 
   // Event handler to safely extract the selected value

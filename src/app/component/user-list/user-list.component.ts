@@ -39,4 +39,10 @@ export class UserListComponent implements OnInit {
   cancelEdit(): void {
     this.selectedUser = null;
   }
+
+  deleteUser(userId: string,user:any): void {
+    this.userService.deleteUser(userId,user).subscribe(() => {
+      this.loadUsers();
+    })
+  }
 }

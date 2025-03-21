@@ -6,8 +6,22 @@
       <p>{{ task.description }}</p>
       <p>Status: {{ task.status }}</p>
       <div *ngIf="task.assignedUserId">
-        <p>Assigned to: {{ task.assignedUserId }}</p>
+        <p>Assigned to: {{ currentUser.email }}</p>
       </div>
+      <div *ngIf="task.status !== 'completed'">
+        <button (click)="markComplete(task)">Mark as Complete</button>
+      </div>
+      <div class="comment-section">
+        <label for="comment-{{ task.id }}">Comments:</label>
+        <input
+          id="comment-{{ task.id }}"
+          type="text"
+          #commentInput
+          placeholder="Add a comment"
+        />
+        <button (click)="addComment(task, commentInput)">Add Comment</button>
+      </div>
+      <!-- Display comments -->
       <div *ngIf="task.comments && task.comments.length">
         <h4>Comments:</h4>
         <ul>

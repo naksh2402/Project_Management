@@ -8,6 +8,9 @@
       <li *ngFor="let user of users">
         {{ user.email }} - Role: {{ user.role }}
         <button (click)="editUser(user)">Edit</button>
+        <button *ngIf="user.id" (click)="deleteUser(user.id, user)">
+          Delete
+        </button>
       </li>
     </ul>
   </div>

@@ -10,12 +10,10 @@ import { environment } from 'src/environment/environment';
   providedIn: 'root'
 })
 export class AdminDashboardService {
-  // Replace with your Firebase Realtime Database URL
   private firebaseDbUrl = environment.firebaseConfig.databaseURL;
 
   constructor(private http: HttpClient) {}
 
-  // Firebase REST endpoints return objects. Here we convert them to arrays.
   getAllProjects(): Observable<Project[]> {
     return this.http.get<{ [key: string]: Project }>(`${this.firebaseDbUrl}/projects.json`)
       .pipe(map(data => data ? Object.keys(data).map(key => ({ id: key, ...data[key] })) : []));

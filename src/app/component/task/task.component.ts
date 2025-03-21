@@ -43,8 +43,8 @@ export class TaskComponent implements OnInit {
       description: this.newTaskDescription,
       projectId: this.newTaskProjectId,
       deadline: this.newTaskDeadline,
-      status: 'pending',   // Default status
-      assignedUserId: '',  // Initially, no user is assigned
+      status: 'pending',   
+      assignedUserId: '',  
       comments: []
     };
 
@@ -62,7 +62,6 @@ export class TaskComponent implements OnInit {
 
   // Prepares a task for editing.
   editTask(task: Task): void {
-    // Create a shallow copy to edit
     this.selectedTask = { ...task };
   }
 

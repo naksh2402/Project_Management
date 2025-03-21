@@ -17,12 +17,12 @@
   </div>
 
   <!-- Project List -->
+  <h2>Projects</h2>
   <div class="project-list">
-    <h3>Projects</h3>
     <ul>
       <li *ngFor="let project of projects">
         <strong>{{ project.name }}</strong
-        >: {{ project.description }}
+        >{{ project.description }}
         <button (click)="editProject(project)">Edit</button>
         <button (click)="deleteProject(project.id ?? '')">Delete</button>
       </li>

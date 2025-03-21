@@ -38,7 +38,6 @@ export class AuthService {
   }
  
   sendOtp(phoneNumber:string,recaptchaToken:string):Observable<any>{
-    // const url=`https://identitytoolkit.googleapis.com/v1/accounts:sendOtp?key=${this.apiKey}`;
     const url=`https://identitytoolkit.googleapis.com/v1/accounts:sendVerificationCode?key=${this.apiKey}`;
     const payload={
       phoneNumber:phoneNumber,
@@ -59,6 +58,7 @@ export class AuthService {
    getCurrentUser(): any {
     return this.currentUserSubject.value;
   }
+  
   getToken(): string | null {
     const user = this.getCurrentUser();
     return user ? user.idToken : null;

@@ -8,7 +8,6 @@ import { environment } from 'src/environment/environment';
   providedIn: 'root'
 })
 export class ProjectService {
-  // Replace with your Firebase Realtime Database URL
   private firebaseDbUrl = environment.firebaseConfig.databaseURL;
 
   constructor(private http: HttpClient) {}

@@ -9,7 +9,6 @@ import { environment } from 'src/environment/environment';
   providedIn: 'root'
 })
 export class TaskService {
-  // Replace with your Firebase Realtime Database URL
   private firebaseDbUrl = environment.firebaseConfig.databaseURL;
 
   constructor(private http: HttpClient) {}
