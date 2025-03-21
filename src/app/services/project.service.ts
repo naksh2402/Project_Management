@@ -1,38 +1,35 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase } from '@angular/fire/compat/database';
+import { HttpClient } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
 import { Project } from '../models/project.model';
-import { map, Observable } from 'rxjs';
+import { environment } from 'src/environment/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectService {
-  constructor(private db: AngularFireDatabase) {}
+  // Replace with your Firebase Realtime Database URL
+  private firebaseDbUrl = environment.firebaseConfig.databaseURL;
 
-  getProjects(): Observable<any[]> {
-    return this.db.list('projects').snapshotChanges().pipe(
-      map(actions =>
-        actions
-          .filter(a => a.payload.exists()) // Check if snapshot exists
-          .map(a => ({
-            id: a.payload.key,
-            ...(a.payload.val() as object)
-          }))
-      )
-    );
-  }
+  constructor(private http: HttpClient) {}
 
-
-
-  createProject(project: Project) {
-    return this.db.list('projects').push(project);
+  getProjects(): Observable<Project[]> {
+    return this.http.get<{ [key: string]: Project }>(`${this.firebaseDbUrl}/projects.json`)
+      .pipe(
+        map(data => data ? Object.keys(data).map(key => ({ id: key, ...data[key] })) : [])
+      );
   }
 
-  updateProject(projectId: string, project: Partial<Project>) {
-    return this.db.object(`projects/ ${projectId}`).update(project);
+  addProject(project: Project): Observable<any> {
+    return this.http.post(`${this.firebaseDbUrl}/projects.json`, project);
   }
 
-  deleteProject(projectId: string) {
-    return this.db.object(`projects/${projectId}`).remove();
-}
+  updateProject(project: Project): Observable<any> {
+    if (!project.id) throw new Error('Project ID is required for update.');
+    return this.http.patch(`${this.firebaseDbUrl}/projects/${project.id}.json`, project);
+  }
+
+  deleteProject(projectId: string): Observable<any> {
+    return this.http.delete(`${this.firebaseDbUrl}/projects/${projectId}.json`);
+  }
 }

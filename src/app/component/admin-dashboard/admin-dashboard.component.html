@@ -1,4 +1,58 @@
-<div class="container">
+<div class="admin-dashboard">
   <h2>Admin Dashboard</h2>
-  <p>Welcome Admin, Here you can manage projects,tasks, and team members.</p>
+
+  <!-- Projects Section -->
+  <section class="projects-section">
+    <h3>Projects</h3>
+    <ul>
+      <li *ngFor="let project of projects">
+        <strong>{{ project.name }}</strong
+        >: {{ project.description }}
+      </li>
+    </ul>
+  </section>
+
+  <!-- Tasks Section -->
+  <section class="tasks-section">
+    <h3>Tasks</h3>
+    <ul>
+      <li *ngFor="let task of tasks">
+        <div>
+          <strong>{{ task.title }}</strong> – Status: {{ task.status }}
+        </div>
+        <div>
+          <!-- Display assigned user email if available, else show task.assignedUserId -->
+          <!-- In your template (admin-dashboard.component.html) -->
+          <span *ngIf="task.assignedUserId">
+            Assigned to:
+            {{ getAssignedMemberEmail(task) || task.assignedUserId }}
+          </span>
+          <span *ngIf="!task.assignedUserId">Not assigned</span>
+        </div>
+        <!-- Dropdown for assigning task -->
+        <div class="assignment-dropdown">
+          <label for="assign-{{ task.id }}">Assign to:</label>
+          <select
+            id="assign-{{ task.id }}"
+            (change)="onAssignChange(task, $event)"
+          >
+            <option value="">-- Select Team Member --</option>
+            <option *ngFor="let member of teamMembers" [value]="member.id">
+              {{ member.email }}
+            </option>
+          </select>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Users Section -->
+  <section class="users-section">
+    <h3>All Users</h3>
+    <ul>
+      <li *ngFor="let user of users">
+        {{ user.email }} – Role: {{ user.role }}
+      </li>
+    </ul>
+  </section>
 </div>

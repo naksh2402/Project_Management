@@ -1,0 +1,70 @@
+<div class="task-component">
+  <h2>Task Management</h2>
+
+  <!-- New Task Form -->
+  <div class="new-task-form">
+    <h3>Create New Task</h3>
+    <input type="text" placeholder="Title" [(ngModel)]="newTaskTitle" />
+    <textarea
+      placeholder="Description"
+      [(ngModel)]="newTaskDescription"
+    ></textarea>
+    <input
+      type="text"
+      placeholder="Project ID"
+      [(ngModel)]="newTaskProjectId"
+    />
+    <input type="date" placeholder="Deadline" [(ngModel)]="newTaskDeadline" />
+    <button (click)="createTask()">Create Task</button>
+  </div>
+
+  <!-- Filtered Task Lists -->
+  <div class="task-lists">
+    <div class="task-list-section">
+      <h3>Pending Tasks</h3>
+      <ul>
+        <li *ngFor="let task of tasks | taskStatus : 'pending'">
+          <strong>{{ task.title }}</strong> - {{ task.description }}
+        </li>
+      </ul>
+    </div>
+    <div class="task-list-section">
+      <h3>In Progress Tasks</h3>
+      <ul>
+        <li *ngFor="let task of tasks | taskStatus : 'inProgress'">
+          <strong>{{ task.title }}</strong> - {{ task.description }}
+        </li>
+      </ul>
+    </div>
+    <div class="task-list-section">
+      <h3>Completed Tasks</h3>
+      <ul>
+        <li *ngFor="let task of tasks | taskStatus : 'completed'">
+          <strong>{{ task.title }}</strong> - {{ task.description }}
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Edit Task Form -->
+  <div *ngIf="selectedTask" class="edit-task-form">
+    <h3>Edit Task</h3>
+    <input type="text" [(ngModel)]="selectedTask.title" placeholder="Title" />
+    <textarea
+      [(ngModel)]="selectedTask.description"
+      placeholder="Description"
+    ></textarea>
+    <input
+      type="text"
+      [(ngModel)]="selectedTask.projectId"
+      placeholder="Project ID"
+    />
+    <input
+      type="date"
+      [(ngModel)]="selectedTask.deadline"
+      placeholder="Deadline"
+    />
+    <button (click)="updateTask()">Update Task</button>
+    <button (click)="cancelEdit()">Cancel</button>
+  </div>
+</div>

@@ -1,92 +1,71 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFireDatabase } from '@angular/fire/compat/database';
-import firebase from 'firebase/compat/app';
-import { Observable, of } from 'rxjs';
-import { User } from '../models/user.model';
-
+import { HttpClient } from '@angular/common/http';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { environment } from 'src/environment/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private currentUser: User | null = null;
-
-  constructor(
-    private afAuth: AngularFireAuth,
-    private db: AngularFireDatabase,
-    private router: Router
-  ) {
-    this.afAuth.authState.subscribe(user => {
-      if (user) {
-        // Retrieve user role from Realtime Database
-        this.db.object(`users/${user.uid}`).valueChanges().subscribe((data: any) => {
-          this.currentUser = { uid: user.uid, phoneNumber: user.phoneNumber || '', role: data?.role || 'teamMember' };
-          localStorage.setItem('user', JSON.stringify(this.currentUser));
-          localStorage.setItem('role', this.currentUser.role);
-        });
-      } else {
-        this.currentUser = null;
-        localStorage.removeItem('user');
-        localStorage.removeItem('role');
-      }
-    });
-  }
-
-  // OTP-based Signup/Login Methods
-  signInWithPhone(phoneNumber: string, recaptchaVerifier: firebase.auth.RecaptchaVerifier): Promise<firebase.auth.ConfirmationResult> {
-    return this.afAuth.signInWithPhoneNumber(phoneNumber, recaptchaVerifier);
-  }
-
-  verifyOTP(otp: string, confirmationResult: firebase.auth.ConfirmationResult): Promise<any> {
-    return confirmationResult.confirm(otp).then(userCredential => {
-      this.router.navigate(['/dashboard']);
-      return userCredential;
-    });
-  }
-
-  // Email/Password Signup with Role (stores role in Realtime Database)
-  async signUpWithEmail(email: string, password: string, role: string): Promise<void> {
-    try {
-      const userCredential = await this.afAuth.createUserWithEmailAndPassword(email, password);
-      await this.db.object(`users/${userCredential.user?.uid}`).set({ email, role });
-      localStorage.setItem('role', role);
-      this.router.navigate(['/dashboard']);
-    } catch (error: any) {
-      console.error('Signup Failed:', error);
-      alert(error.message);
+  private apiKey = environment.firebaseConfig.apiKey;
+  private currentUserSubject = new BehaviorSubject<any>(null);
+    currentUser$ = this.currentUserSubject.asObservable();
+    
+  constructor(private http: HttpClient) {
+    const savedUser = localStorage.getItem('currentUser');
+    if (savedUser) {
+      this.currentUserSubject.next(JSON.parse(savedUser));
     }
   }
 
-  // Email/Password Login
-  async loginWithEmail(email: string, password: string): Promise<void> {
-    try {
-      await this.afAuth.signInWithEmailAndPassword(email, password);
-      this.router.navigate(['/dashboard']);
-    } catch (error: any) {
-      console.error('Login Failed:', error);
-      alert(error.message);
+  // Email/password sign up
+  signUpWithEmail(email: string, password: string, role: string): Observable<any> {
+    const url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${this.apiKey}`;
+    const payload = { email, password, returnSecureToken: true };
+    return this.http.post(url, payload);
+  }
+
+  // Email/password login
+  loginWithEmail(email: string, password: string): Observable<any> {
+    const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${this.apiKey}`;
+    const payload = { email, password, returnSecureToken: true };
+    return this.http.post(url, payload);
+  }
+
+  // Save user data after login/signup
+  setCurrentUser(user: any): void {
+    localStorage.setItem('currentUser', JSON.stringify(user));
+    this.currentUserSubject.next(user);
+  }
+ 
+  sendOtp(phoneNumber:string,recaptchaToken:string):Observable<any>{
+    // const url=`https://identitytoolkit.googleapis.com/v1/accounts:sendOtp?key=${this.apiKey}`;
+    const url=`https://identitytoolkit.googleapis.com/v1/accounts:sendVerificationCode?key=${this.apiKey}`;
+    const payload={
+      phoneNumber:phoneNumber,
+      recaptchaToken:recaptchaToken
     }
+    return this.http.post(url,payload);
+  }
+  verifyOtp(sessionInfo: string, code: string): Observable<any> {
+    const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPhoneNumber?key=${this.apiKey}`;
+    const payload = {
+      sessionInfo: sessionInfo,
+      code: code,
+      returnSecureToken: true
+    };
+    return this.http.post(url, payload);
   }
 
-  // Sign out
-  async signOut(): Promise<void> {
-    await this.afAuth.signOut();
-    localStorage.removeItem('user');
-    localStorage.removeItem('role');
-    this.router.navigate(['/auth']);
+   getCurrentUser(): any {
+    return this.currentUserSubject.value;
   }
-
-  // Helper methods
-  isAuthenticated(): boolean {
-    return !!localStorage.getItem('user');
+  getToken(): string | null {
+    const user = this.getCurrentUser();
+    return user ? user.idToken : null;
   }
-
-  getUserRole(): string | null {
-    return localStorage.getItem('role');
+   logout(): void {
+    localStorage.removeItem('currentUser');
+    this.currentUserSubject.next(null);
   }
-
-  getCurrentUser(): Observable<User | null> {
-    return this.currentUser ? of(this.currentUser) :of(null);
 }
-}
+

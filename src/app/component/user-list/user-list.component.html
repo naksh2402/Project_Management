@@ -1,0 +1,28 @@
+<div class="user-list-component">
+  <h2>User Management</h2>
+
+  <!-- User List -->
+  <div class="user-list">
+    <h3>Users</h3>
+    <ul>
+      <li *ngFor="let user of users">
+        {{ user.email }} - Role: {{ user.role }}
+        <button (click)="editUser(user)">Edit</button>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Edit User Form -->
+  <div *ngIf="selectedUser" class="edit-user-form">
+    <h3>Edit User</h3>
+    <label>Email:</label>
+    <input type="text" [(ngModel)]="selectedUser.email" disabled />
+    <label>Role:</label>
+    <select [(ngModel)]="selectedUser.role">
+      <option value="admin">Admin</option>
+      <option value="team">Team</option>
+    </select>
+    <button (click)="updateUser()">Update User</button>
+    <button (click)="cancelEdit()">Cancel</button>
+  </div>
+</div>

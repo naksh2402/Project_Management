@@ -1,0 +1,43 @@
+<div class="auth-container">
+  <h2>{{ isLoginMode ? "Login" : "Signup" }}</h2>
+  <form (ngSubmit)="onSubmit()">
+    <div>
+      <label>Email:</label>
+      <input type="email" [(ngModel)]="email" name="email" required />
+    </div>
+    <div>
+      <label>Password:</label>
+      <input type="password" [(ngModel)]="password" name="password" required />
+    </div>
+    <!-- Additional fields for signup mode -->
+    <div *ngIf="!isLoginMode">
+      <div>
+        <label>Role:</label>
+        <select [(ngModel)]="role" name="role">
+          <option value="admin">Admin</option>
+          <option value="team">Team</option>
+        </select>
+      </div>
+      <div>
+        <label>Phone:</label>
+        <input
+          type="text"
+          [(ngModel)]="phone"
+          name="phone"
+          placeholder="Enter your Phone No."
+        />
+        <button type="button" (click)="sendOTP()">Send Otp</button>
+      </div>
+      <!-- Show OTP input only if OTP has been sent -->
+      <div *ngIf="!isLoginMode">
+        <label>OTP:</label>
+        <input type="text" [(ngModel)]="otp" name="otp" required />
+        <button type="button" (click)="verifyOTP()">Verify OTP</button>
+      </div>
+    </div>
+    <button type="submit">{{ isLoginMode ? "Login" : "Signup" }}</button>
+  </form>
+  <button (click)="toggleMode()">
+    Switch to {{ isLoginMode ? "Signup" : "Login" }}
+  </button>
+</div>

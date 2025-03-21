@@ -1,9 +1,10 @@
 export interface Task{
-    id:string,
-    name:string,
-    description:string,
-    comments?:string[],
-    projectId:string,
-    assignedTo?:string,
+    id?:string;
+    title:string;
+    description:string;
+    projectId:string;
+    comments?:string[];
+    deadline:string;
+    assignedUserId:string;
     status:'pending' | 'inProgress' | 'completed'
 }

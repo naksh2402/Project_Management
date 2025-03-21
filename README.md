@@ -116,7 +116,12 @@ The application is built using Angular for the front end and with Firebase Fires
 
   - Name: Alice Admin
   - Email: alice.admin@example.com
+    -Password: 123456
   - Role: Admin
+
+**Testing credentials for phone no. login:**
+-Phone-+91 8585967815
+-OTP:123456
 
 - **Team Members:**
   - Name: Bob User

@@ -1,4 +1,22 @@
-<div class="container">
+<div class="team-dashboard">
   <h2>Team Dashboard</h2>
-  <p>Welcome Team Member, Here you can view and update your tasks</p>
+  <div *ngIf="tasks.length > 0; else noTasks">
+    <div *ngFor="let task of tasks" class="task-card">
+      <h3>{{ task.title }}</h3>
+      <p>{{ task.description }}</p>
+      <p>Status: {{ task.status }}</p>
+      <div *ngIf="task.assignedUserId">
+        <p>Assigned to: {{ task.assignedUserId }}</p>
+      </div>
+      <div *ngIf="task.comments && task.comments.length">
+        <h4>Comments:</h4>
+        <ul>
+          <li *ngFor="let comment of task.comments">{{ comment }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <ng-template #noTasks>
+    <p>No tasks assigned to you.</p>
+  </ng-template>
 </div>
