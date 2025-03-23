@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectService } from '../../services/project.service';
 import { Project } from '../../models/project.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-project',
@@ -13,7 +14,7 @@ export class ProjectComponent implements OnInit {
   newProjectDescription: string = '';
   selectedProject: Project | null = null;
 
-  constructor(private projectService: ProjectService) {}
+  constructor(private projectService: ProjectService,private toastr:ToastrService) {}
 
   ngOnInit(): void {
     this.loadProjects();
@@ -27,7 +28,7 @@ export class ProjectComponent implements OnInit {
 
   createProject(): void {
     if (!this.newProjectName || !this.newProjectDescription) {
-      alert('Please fill all fields.');
+      this.toastr.error('Please fill all fields.');
       return;
     }
     const project: Project = {
@@ -37,6 +38,7 @@ export class ProjectComponent implements OnInit {
     this.projectService.addProject(project).subscribe(() => {
       this.newProjectName = '';
       this.newProjectDescription = '';
+       this.toastr.success('Project created successfully!');
       this.loadProjects();
     });
   }

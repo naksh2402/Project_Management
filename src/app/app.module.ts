@@ -15,7 +15,8 @@ import { ProjectComponent } from './component/project/project.component';
 import { AdminAuthGuard } from './gaurds/admin-auth.gaurd';
 import { TeamAuthGuard } from './gaurds/team-auth.gaurd';
 import { TaskStatusPipe } from './pipes/task-status-filter.pipe';
-
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,6 +34,8 @@ import { TaskStatusPipe } from './pipes/task-status-filter.pipe';
     FormsModule,
     HttpClientModule,
     AppRoutingModule,
+    BrowserAnimationsModule,
+      ToastrModule.forRoot(),
   ],
   providers: [AdminAuthGuard,TeamAuthGuard],
   bootstrap: [AppComponent]

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TaskService } from '../../services/task.service';
 import { Task } from '../../models/task.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-task',
@@ -18,7 +19,7 @@ export class TaskComponent implements OnInit {
   // For editing a task
   selectedTask: Task | null = null;
 
-  constructor(private taskService: TaskService) {}
+  constructor(private taskService: TaskService,private toastr:ToastrService) {}
 
   ngOnInit(): void {
     this.loadTasks();
@@ -35,7 +36,7 @@ export class TaskComponent implements OnInit {
   // Creates a new task.
   createTask(): void {
     if (!this.newTaskTitle || !this.newTaskDescription || !this.newTaskProjectId || !this.newTaskDeadline) {
-      alert('Please fill all required fields');
+      this.toastr.error('Please fill all required fields.');
       return;
     }
     const newTask: Task = {
@@ -54,6 +55,7 @@ export class TaskComponent implements OnInit {
         this.newTaskDescription = '';
         this.newTaskProjectId = '';
         this.newTaskDeadline = '';
+        this.toastr.success('Task created successfully!');
         this.loadTasks();
       },
       error => console.error('Error creating task:', error)

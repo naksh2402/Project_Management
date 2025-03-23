@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
+import {  ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-auth',
@@ -22,7 +23,7 @@ export class AuthComponent {
   
   recaptchaToken: string = 'dummy-token';
 
-  constructor(private authService: AuthService,private router:Router,private userService:UserService) {}
+  constructor(private authService: AuthService,private router:Router,private userService:UserService,private toastr:ToastrService) {}
 
   // Toggle between login and signup modes
   toggleMode() {
@@ -43,7 +44,7 @@ export class AuthComponent {
         const fullUser = { ...response, ...userData };
         this.authService.setCurrentUser(fullUser);
         this.redirectBasedOnRole(fullUser.role);
-        alert('Login successful!');
+             this.toastr.success('Login Successful');
           },
           (error:any) => {
             console.error('Error fetching user data:', error);
@@ -53,17 +54,16 @@ export class AuthComponent {
         );
       },
       error => {
-        alert('Invalid email or password!');
+       this.toastr.error('Login Failed, Invalid Credentials!'); 
         console.error('Login error:', error);
       }
     );
   } else {
-    // Signup flow (unchanged)
     if (this.error) {
-      alert("Signup failed! Please try again.");
+      this.toastr.error('Signup failed! Please try again.'); 
       return;
     } else if (!this.sessionInfo && !this.verified) {
-      alert("OTP verification failed! Please try again.");
+      this.toastr.error('OTP verification failed! Please try again.');
       return;
     } else {
       this.authService.signUpWithEmail(this.email, this.password, this.role).subscribe(
@@ -78,11 +78,12 @@ export class AuthComponent {
             res => console.log('User record added successfully:', res),
             err => console.error('Error adding user record:', err)
           );
-          alert('Signup successful! Please log in.');
+          this.toastr.success('Signup Successful! Please log in. ');
+          this.isLoginMode=!this.isLoginMode;
           this.router.navigate(['/auth']);
         },
         error => {
-          alert('Signup failed! Please try again.');
+          this.toastr.error('Signup failed! Please try again.');
           console.error('Signup error:', error);
         }
       );
@@ -95,12 +96,12 @@ export class AuthComponent {
       response => {
         this.sessionInfo = response.sessionInfo;
         this.showOTPInput = true;
-        alert('OTP sent successfully!');
+        this.toastr.success('OTP sent successfully!');
         console.log('OTP sent successfully:', response);
       },
       error => {
         this.error=error.message;
-        alert('Failed to send OTP! Please login with testing credentials only.');
+        this.toastr.error('Failed to send OTP! Please login with testing credentials only.');
         console.error('Error sending OTP, falling back to email signup:', error);
         
       }
@@ -112,14 +113,14 @@ export class AuthComponent {
     this.authService.verifyOtp(this.sessionInfo, this.otp).subscribe(
       response => {
         this.authService.setCurrentUser(response);
-        alert('OTP verification successful!');
+        this.toastr.success('OTP verification successful!');
          this.verified=true;
          this.error=null;
         console.log('OTP verification successful:', response);
       },
       error => {
           this.error=error.message;
-        alert('OTP verification failed! Please with testing credentials only.');
+          this.toastr.error('OTP verification failed! Please try again.');
         console.error('OTP verification failed:', error);
       }
     );
