@@ -36,7 +36,24 @@
     </div>
     <button type="submit">{{ isLoginMode ? "Login" : "Signup" }}</button>
   </form>
-  <button (click)="toggleMode()">
+  <button (click)="toggleMode()" class="toggle" style="width: 100%">
     Switch to {{ isLoginMode ? "Signup" : "Login" }}
   </button>
+  <div *ngIf="isLoginMode">
+    <p><strong>Sample data to login:</strong></p>
+    <ul>
+      <li>
+        <strong>Email:</strong>alice.admin@example.com
+        <strong>Password:</strong> 123456 <strong>Role: Admin</strong>
+      </li>
+      <li>
+        <strong>Email:</strong>bob.user@example.com
+        <strong>Password:</strong> 123456 <strong>Role: User</strong>
+      </li>
+      <li>
+        <strong>Email:</strong>charlie.member@example.com
+        <strong>Password:</strong> 123456 <strong>Role: User</strong>
+      </li>
+    </ul>
+  </div>
 </div>
